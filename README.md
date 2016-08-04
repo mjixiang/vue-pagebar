@@ -1,5 +1,6 @@
 # vue-pagebar
 A paging component for Vue.js
+
 基于Vue.js的分页组件
 
 ##示例

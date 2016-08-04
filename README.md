@@ -3,17 +3,22 @@ A paging component for Vue.js
 
 基于Vue.js的分页组件
 
+[查看jquery版本](https://github.com/mjixiang/ui.paging)
+
 ##示例
 地址：https://mjixiang.github.io/vue-pagebar
 
 
 ##输入
-```
-	*page:Number 当前页 必须
-	*recordCount:Number 总记录数 若 == false 则不显示分页条
-	*psize:Number 页大小默认20
-	*changeEvent:String 可选 默认onPageChange 页码发生变化冒泡的方法名(若同一页面需要使用多个分页，需指定changeEvent避免事件监听冲突，如本例)
-```
+>`page`:`Number` 当前页 必须
+
+>`recordCount`:`Number` 总记录数 若 `== false` 则不显示分页条
+
+>`psize`:`Number` 页大小默认`20`
+
+>`changeEvent`:`String` 可选 默认`onPageChange` 页码发生变化冒泡的方法名
+
+>>(若同一页面需要使用多个分页，需指定`changeEvent`避免事件监听冲突，如本例)
 
 ##事件捕获
 ```javascript

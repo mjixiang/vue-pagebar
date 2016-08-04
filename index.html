@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vue-pagebar demo</title>
+	<style>
+	/*分页*/
+	.paging-box{box-shadow:3px 0 8px #ccc;}
+	.page-bar{text-align:center;}
+	.page-items{margin:15px 0px 5px 0px;padding:0px;border-radius:4px;display:inline-block;}
+	.page-items>li{color:#428bca;border:1px solid #dddddd;background-color:white;padding:5px 10px;font-size:12px;float:left;margin-left:-1px;position:relative;display:block;line-height:1.5em;cursor:pointer;}
+	.page-current-item{color:white!important;background-color:#428bca!important;border-color:#428bca;cursor:default!important;}
+	.page-disable-item{color:#999!important;background-color:white!important;border-color:#ddd;cursor:default!important;pointer-events:none;}
+	.page-jump{display:inline-block;height:28px;font-size:14px;margin-left:20px;color:#428bca;-webkit-transform:translate(0,-16px);-moz-transform:translate(0,-16px);-ms-transform:translate(0,-16px);-o-transform:translate(0,-16px);transform:translate(0,-16px);}
+	.page-jump input{width:50px;padding:0px;margin:0px;height:27px;text-align:center;border:1px solid #ccc;color:#428bca;}
+	.page-jump button{width:50px;padding:0px;margin:0px;height:29px;color:#428bca;border:1px solid #ccc;background:white;margin-left:5px;cursor:pointer;}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<Paging :page.sync="page" :record-count="recordCount" :psize="20"></Paging>
+		<br><br><br><br>
+		<Paging :page.sync="page1" :record-count="3" :psize="1" change-event="pChange"></Paging>
+	</div>
+
+	<script src="vue.min.js"></script>
+	<script>
+		//注册全局组件开始
+		Vue.component('Paging',{
+			template: (`<div v-show="pages.length" class="paging-box">
+				<div class="page-bar">
+					<ul class="page-items">
+						<li @click="setPage(1)" :class="{'page-disable-item':page == 1}">首页</li>
+						<li @click="setPage(page-1)" :class="{'page-disable-item':page == 1}">上一页</li>
+						<li v-for="p in pages" @click="setPage(p)" :class="{'page-current-item':p == page}">{{ p }}</li>
+						<li @click="setPage(page+1)" :class="{'page-disable-item':page == maxPage}">下一页</li>
+						<li @click="setPage(maxPage)" :class="{'page-disable-item':page == maxPage}">末页</li>
+					</ul>
+					<div class="page-jump">
+						<span>共{{ maxPage }}页</span>
+						<input type="number" v-model="jumpPage" min="1" :max="maxPage">
+						<button @click="setPage(jumpPage)" class="page-goto">确定</button>
+					</div>
+				</div>
+			</div>`),
+			data(){
+				return {
+					jumpPage:this.page
+				}
+			},
+			computed:{
+				maxPage(){
+					return Math.ceil(this.recordCount / this.psize);
+				},
+				pages(){
+					if(!this.maxPage) return [];
+					var pages = [];
+					if (this.page > this.maxPage - 3) {
+						for (var i = Math.max(1, this.maxPage - 6); i <= this.page - 4; i++) {
+							pages.push(i);
+						}
+					}
+					for (var i = 1; i <= this.maxPage; i++) {
+						if (this.page - 3 <= i && i <= this.page + 3) {
+							pages.push(i);
+						}
+					}
+					if (this.page < 4) {
+						for (var i = 4 + this.page; i <= Math.min(7, this.maxPage); i++) {
+							pages.push(i);
+						}
+					}
+					return pages;
+				}
+			},
+			watch:{
+				page(val){
+					this.jumpPage = this.page;
+					this.$dispatch(this.changeEvent,val);
+				}
+			},
+			methods:{
+		        setPage(p){
+		        	p = p < 1 ? 1 : p > this.maxPage ? this.maxPage : p;
+		        	this.page = p;
+		        }
+		    },
+			props:{
+				page:{
+					type:Number,
+					default:0,
+					twoWay:true,
+					coerce(val){
+						return val*1;
+					}
+				},
+				psize:{
+					type:Number,
+					default:20
+				},
+				recordCount:{
+					type:Number,
+					default:0,
+					coerce(val){
+				        return val*1;
+				    }
+				},
+				changeEvent:{
+					type:String,
+					default:'onPageChange'
+				}
+			}
+		})
+		//注册全局组件开始
+	</script>
+
+
+
+	<!--  注释开始 -->
+	<br><br><br><br>
+	<div style="border-left:5px solid #987654;background:#eee;padding:8px 15px;line-height:30px;">
+		<div>page:Number 当前页 必须</div>
+		<div>recordCount:Number 总记录数 若 == false 则不显示分页条</div>
+		<div>psize:Number 页大小默认20</div>
+		<div>changeEvent:String 可选 默认onPageChange 页码发生变化冒泡的方法名(若同一页面需要使用多个分页，需指定changeEvent避免事件监听冲突，如本例)</div>
+	</div>
+	<br><br><br><br>
+	<div style="border-left:5px solid #987654;background:#eee;padding:8px 15px;line-height:40px;">
+		<div style="color:red;">注：该示例用了部分es6代码，请用较新版本的chrome打开,否则无法正常工作</div>
+		<div><a href="https://github.com/mjixiang/vue-pagebar/blob/master/pagebar.vue">pagebar.vue</a>为项目中使用组件，本示例为了简化操作将其代码融入index.html</div>
+		<div id="state" style="color:blue;"></div>
+	</div>
+	<!--  注释结束 -->
+	<script>
+		//示例js
+		var page = window.location.href.split('?page=')[1];
+		new Vue({
+  			el:'#app',
+  			data: {
+				page:page || 1,
+				page1:1,
+                recordCount:205
+  			},
+  			events:{
+  				//处理页码变化后的事件
+  				onPageChange(p){
+  					//do something 一般请求后台数据
+  					try{
+  						//仅为本demo，请勿模仿
+  						window.history.replaceState('','',window.location.href.split('?page=')[0]+'?page='+p);
+  						document.getElementById('state').innerHTML = '刷新页面，第一个分页会记录当前页码';
+  					}catch(e){
+  						console.log('本地打开,无法使用replaceState');
+  					}
+  					console.log(p === this.page);	//true
+  				},
+  				pChange(p){
+  					console.log(p,this.page1);
+  				}
+  			}
+  		});
+	</script>
+</body>
+</html>

@@ -10,6 +10,10 @@ A paging component for Vue.js
 
 
 ##props
+```html
+<Paging :page.sync="page" :record-count="recordCount" :psize="20"></Paging>
+```
+
 >`page`:`Number` 当前页，必须，双向绑定
 
 >`recordCount`:`Number` 总记录数，若 `== false` 则不显示分页条

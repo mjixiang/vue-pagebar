@@ -5,24 +5,24 @@ A paging component for Vue.js
 
 [查看jquery版本](https://github.com/mjixiang/ui.paging)
 
-##示例
+##example
 地址：https://mjixiang.github.io/vue-pagebar
 
 
-##输入
->`page`:`Number` 当前页 必须
+##props
+>`page`:`Number` 当前页 必须 双向绑定
 
 >`recordCount`:`Number` 总记录数 若 `== false` 则不显示分页条
 
->`psize`:`Number` 页大小默认`20`
+>`psize`:`Number` 页大小 默认`20`
 
 >`changeEvent`:`String` 可选 默认`onPageChange` 页码发生变化冒泡的方法名
 
->>(若同一页面需要使用多个分页，需指定`changeEvent`避免事件监听冲突，如本例)
+>>(若同一页面需要使用多个分页，需指定`changeEvent`避免事件监听冲突，如本示例)
 
-##事件捕获
+##events
 ```javascript
-	//父组件
+	//父组件中
 	events:{
 		//处理页码变化后的事件（默认`onPageChange`） 若指定了changeEvent则捕获对应的事件
 		onPageChange(p){

@@ -16,9 +16,9 @@ A paging component for Vue.js
 
 >`page`:`Number` 当前页，必须，双向绑定
 
->`recordCount`:`Number` 总记录数，若 `== false` 则不显示分页条
+>`recordCount`:`Number` 总记录数，必须，若 `== false` 则不显示分页条
 
->`psize`:`Number` 页大小，默认`20`
+>`psize`:`Number` 页大小，可选，默认`20`
 
 >`changeEvent`:`String` 页码发生变化父组件需监听的方法名，可选，默认`onPageChange` 
 

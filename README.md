@@ -11,7 +11,7 @@ A paging component for Vue.js
 
 ##props
 ```html
-<Paging :page.sync="page" :record-count="recordCount" :psize="20"></Paging>
+<paging :page.sync="page" :record-count="recordCount" :psize="20"></paging>
 ```
 
 >`page`:`Number` 当前页，必须，双向绑定
